@@ -13,12 +13,12 @@ class Usuario {
         this.#foto = foto
     }
 
-  adicionarAmigo(){
+    adicionarAmigo(){
 
-  }
-   removerAmigo(){
+    }
+    removerAmigo(){
 
-   }
-  
+    }
+
 }
 

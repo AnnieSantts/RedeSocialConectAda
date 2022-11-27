@@ -1,4 +1,4 @@
-
+// @TODO: Remover código sem utilização de Notificações, mensagens e marcações
 
 //SIDEBAR
 const menuItens = document.querySelectorAll('.menu-item');
@@ -174,14 +174,13 @@ const changeBG = () => {
 }
 
 Bg1.addEventListener('click', () => {
-    // darkColorLightness = '95%';
-    // whiteColorLightness = '20%';
-    // lightColorLightness = '15%';
+    darkColorLightness = '17%';
+    whiteColorLightness = '100%';
+    lightColorLightness = '95%';
     Bg1.classList.add('active');
     Bg2.classList.remove('active');
     Bg3.classList.remove('active');
-    window.location.reload();
-    //changeBG();
+    changeBG();
 })
 
 Bg2.addEventListener('click', () => {

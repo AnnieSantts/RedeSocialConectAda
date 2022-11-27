@@ -1,0 +1,296 @@
+<!DOCTYPE html>
+<html lang="pt-BR">
+
+<head>
+    <meta charset="UTF-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>ConnectAda</title>
+    <link rel="stylesheet" href="https://unicons.iconscout.com/release/v2.1.6/css/unicons.css">
+    <link rel="stylesheet" href="./css/style.css">
+</head>
+
+<body>
+    <!------------------ABA SUPERIOR------------------------>
+    <nav>
+        <div class="container">
+            <h2 class="log">
+                ConnectAda
+            </h2>
+            <div class="search-bar">
+                <i class="uil uil-search"></i>
+                <input type="search" name="" id="input-search" placeholder="Pesquisar">
+            </div>
+            <div class="create">
+                <span class="btn btn-primary" id="logoff">
+                    Sair
+                </span>
+            </div>
+        </div>
+    </nav>
+    <!------------------FIM ABA SUPERIOR------------------------>
+
+    <!----------------------MAIN---------------------->
+    <main>
+        <div class="container">
+            <!----------------------ESQUERDA---------------------->
+            <div class="left">
+                <a class="profile">
+                    <div class="profile-photo">
+                        <img src="./images/profile-19.jpg" alt="">
+                    </div>
+                    <div class="hundle">
+                        <h4 id="recebe-nome-usuario"></h4>
+                        <!--p class="text-muted">
+                            @username
+                        </p-->
+                    </div>
+                </a>
+
+                <div class="sidebar">
+                    <a class="menu-item active" id="btn-home">
+                        <span><i class="uil uil-home"></i></span>
+                        <h3>Home</h3>
+                    </a>
+                    <a class="menu-item" id="btn-conexoes">
+                        <span><i class="uil uil-users-alt"></i></span>
+                        <h3>Conexões</h3>
+                    </a>
+
+                    <!-- <a class="menu-item" id="notifications">
+                        <span><i class="uil uil-bell">
+                                <small class="notification-count">3+</small>
+                            </i></span>
+                        <h3>Notificações</h3>
+                        <div class="notifications-popup">
+                            <div>
+                                <div class="profile-photo">
+                                    <img src="" alt="">
+                                </div>
+                                <div class="notifications-body">
+                                    <b>
+                                        Nome
+                                    </b>
+                                    Aceitou sua solicitação de amizade
+                                    <small class="text-muted">2 dias atrás</small>
+                                </div>
+                            </div>
+                            <div>
+                                <div class="profile-photo">
+                                    <img src="" alt="">
+                                </div>
+                                <div class="notifications-body">
+                                    <b>
+                                        Nome
+                                    </b>
+                                    Comentou na sua publicação
+                                    <small class="text-muted">3 dias atrás</small>
+                                </div>
+                            </div>
+                        </div>-
+                    </a>
+
+                    <a class="menu-item" id="messages-notifications">
+                        <span><i class="uil uil-envelope-alt">
+                                <small class="notification-count">6</small>
+                            </i></span>
+                        <h3>Mensagens</h3>
+                    </a>
+
+                    <a class="menu-item">
+                        <span><i class="uil uil-bookmark"></i></span>
+                        <h3>Marcações</h3>
+                    </a> -->
+
+                    <a class="menu-item" id="theme">
+                        <span><i class="uil uil-palette"></i></span>
+                        <h3>Tema</h3>
+                    </a>
+
+                    <a class="menu-item" id="meus-posts">
+                        <span><i class="uil uil-comment-dots"></i></span>
+                        <h3>Meus Posts</h3>
+                    </a>
+
+                </div>
+
+                <!----------------------------------->
+                <label for="create-post" class="btn btn-primary">
+                    Criar Post
+                </label>
+
+            </div>
+            <!----------------------CENTRO---------------------->
+            <div class="middle">
+
+                <!----------------------FIM DAS POSTAGENS---------------------->
+                <form action="" class="create-post">
+                    <div class="profile-photo">
+                        <img src="images/profile-19.jpg">
+                    </div>
+                    <input type="text" placeholder="Digite aqui sua postagem" id="create-post">
+                    <input type="button" value="Postar" class="btn btn-primary" id="cadastrarPost">
+                </form>
+
+                <!--------------------FEEDS-------------------->
+                <div class="feeds" id="mostra-feeds">
+                </div>
+            </div>
+
+            <!----------------------DIREITA---------------------->
+            <div class="right">
+                <div class="messages">
+
+                    <div class="heading">
+                        <h4>Mensagens</h4>
+                        <i class="uil uil-edit"></i>
+                    </div>
+
+                    <!-------BARRA BUSCA------->
+                    <div class="search-bar">
+                        <i class="uil uil-search"></i>
+                        <input type="search" placeholder="Buscar" id="message-search">
+                    </div>
+
+                    <!-------CATEGORIA MENSAGENS------->
+                    <div class="category">
+                        <h6 class="active">Primary</h6>
+                        <h6>Geral</h6>
+                        <h6 class="message-requests">Solicitações(4)</h6>
+                    </div>
+
+                    <!-------MENSAGEM------->
+                    <div class="message">
+                        <div class="profile-photo">
+                            <img src="" alt="">
+                        </div>
+                        <div class="message-body">
+                            <h5>Marina</h5>
+                            <p class="text-muted">Conteúdo da mensagem</p>
+                        </div>
+                    </div>
+
+                    <div class="message">
+                        <div class="profile-photo">
+                            <img src="" alt="">
+                        </div>
+                        <div class="message-body">
+                            <h5>Pedro</h5>
+                            <p class="text-muted">Conteúdo da mensagem 2 </p>
+                        </div>
+                    </div>
+
+                    <div class="message">
+                        <div class="profile-photo">
+                            <img src="" alt="">
+                        </div>
+                        <div class="message-body">
+                            <h5>Ricardo</h5>
+                            <p class="text-muted">Conteúdo da mensagem 3</p>
+                        </div>
+                    </div>
+
+                    <!-------SOLICITAÇÕES DE AMIZADE------->
+                    <div class="friends-requests">
+                        <h4></h4>
+                        <div class="request">
+                            <div class="info">
+                                <div class="profile-photo">
+                                    <img src="" alt="" class="">
+                                </div>
+                                <div>
+                                    <h5>
+                                        Nome Pessoa
+                                    </h5>
+                                    <p class="text-muted">
+                                        5 amigos em comum
+                                    </p>
+                                </div>
+
+                            </div>
+                            <div class="action">
+                                <button class="btn btn-primary">
+                                    Aceitar
+                                </button>
+                                <button class="btn">
+                                    Recusar
+                                </button>
+                            </div>
+                        </div>
+                    </div>
+
+
+                </div>
+            </div>
+
+        </div>
+    </main>
+    <!----------------------FIM MAIN---------------------->
+
+    <!----------------------CUSTOMIZAÇÃO---------------------->
+    <div class="customize-theme">
+        <div class="card">
+            <h2>Customize a visualização</h2>
+            <p class="text-muted">
+                Escolha o tamanho da fonte, cores e fundo de tela
+            </p>
+
+            <!-------TAMANHOS DE FONTE------>
+            <div class="font-size">
+                <h4>Tamanho da Fonte</h4>
+                <div>
+                    <h6>Aa</h6>
+                    <div class="choose-size">
+                        <span class="font-size-1"></span>
+                        <span class="font-size-2"></span>
+                        <span class="font-size-3 active"></span>
+                        <span class="font-size-4"></span>
+                        <span class="font-size-5"></span>
+                    </div>
+                    <h3>Aa</h3>
+                </div>
+            </div>
+
+            <!------------CORES--------------->
+            <div class="color">
+                <h4>Cor</h4>
+                <div class="choose-color">
+                    <span class="color-1 active"></span>
+                    <span class="color-2"></span>
+                    <span class="color-3"></span>
+                    <span class="color-4"></span>
+                    <span class="color-5"></span>
+                </div>
+            </div>
+
+            <!------------COR BACKGROUND---------------->
+            <div class="background">
+                <h4>Background</h4>
+                <div class="choose-bg">
+                    <div class="bg-1 active">
+                        <span></span>
+                        <h5 for="bg-1">Light</h5>
+
+                    </div>
+                    <div class="bg-2">
+                        <span></span>
+                        <h5 for="bg-2">Dim</h5>
+
+                    </div>
+                    <div class="bg-3">
+                        <span></span>
+                        <h5 for="bg-3">Light Out</h5>
+
+                    </div>
+                </div>
+
+            </div>
+
+        </div>
+
+    </div>
+    <script src="Usuario2.class.js"></script>
+    <script src="index.js"></script>
+</body>
+
+</html>

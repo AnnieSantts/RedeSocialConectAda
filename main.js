@@ -1,6 +1,5 @@
 import Usuario from "./Usuario.class.js";
 
-//console.log(Usuario);
 
 const btnCadastrarNewUSer = document.getElementById('botaoCadastro');
 

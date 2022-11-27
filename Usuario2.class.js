@@ -1,3 +1,6 @@
+
+    
+
 class Usuario {
     #usuario;
     nome;
@@ -16,7 +19,7 @@ class Usuario {
             if (i.user === usuario) {
                 document.getElementById('recebe-nome-usuario').innerHTML = i.nome;
                 this.nome = i.nome;
-                return null;
+                return;
             }
         });
     }
@@ -26,71 +29,28 @@ class Usuario {
         return users;
     }
 
-
-    // adicionarUsuario() {
-    //     //Antes de adicionar o usuário preciso verificar se existe outro com mesmo nome
-
-    //     //const verificaExistenciaUsuarioMesmoUser = pesquisarUsuario(nome);
-
-    //     //Ao tentar adicionar um usuário verifico se já não existe outro com mesmo nome (nome de usuário)
-
-    //     //const existeUsers = pesquisarUsuario(this.usuario);
-
-    //     let users = JSON.parse(localStorage.getItem('usuarios')) ?? [];
-
-    //     users.push({ 'nome': this.nome, 'user': this.#usuario, 'senha': this.#senha, 'tipo': 'user' });
-
-    //     localStorage.setItem('usuarios', JSON.stringify(users))
-
-    // }
-
-    // autenticarUsuario() {
-    //     let users = JSON.parse(localStorage.getItem('usuarios')) ?? [];
-    //     users.forEach(i => {
-    //         if (i.user === this.#usuario && i.senha === this.#senha) {
-    //             this.#logado = true;
-    //             return null;
-    //         }
-    //     });
-    //     if (this.#logado === true) {
-    //         console.log('Usuário logado');
-    //     }
-    // }
-
-
     logoff() {
-        localStorage.setItem('logado', []);
+        localStorage.removeItem('logado');
         return true;
     }
-
-    // listarAmigos() {
-    //     console.log('amigos-' + this.#usuario);
-    //     let usersFriends = JSON.parse(localStorage.getItem('amigos-' + this.#usuario)) ?? [];
-
-    // }
-
-
 
     set adicionarAmigo(useramigo) {
         this.#amigo = useramigo;
         let amigos = JSON.parse(localStorage.getItem('amigos-' + this.#usuario)) ?? [];
         amigos.push({ 'useramigo': this.#amigo });
+
         localStorage.setItem('amigos-' + this.#usuario, JSON.stringify(amigos));
+        this.conexoes();
     }
 
-    set removerAmigo(nomeamigo) {
-        //this.#amigo = nomeamigo;        
+    set removerAmigo(nomeamigo) {      
         let amigos = JSON.parse(localStorage.getItem('amigos-' + this.#usuario)) ?? [];
-        amigos.forEach(e => {
-            console.log(e.useramigo, nomeamigo);
-            if (e.useramigo == nomeamigo) {
+        
+        const index = amigos.findIndex(amigo => amigo.useramigo == nomeamigo);
+        amigos = amigos.slice(1, index);
 
-            } else {
-                amigos.push({ 'useramigo': e.useramigo });
-            }
-        });
         localStorage.setItem('amigos-' + this.#usuario, JSON.stringify(amigos));
-        console.log(amigos)
+        this.conexoes();
     }
 
     set curtirPost(idPost){
@@ -100,121 +60,119 @@ class Usuario {
         localStorage.setItem('curtidas', JSON.stringify(curtidas));
     }
 
-    postar(conteudoPost, linkImg) {
-        //console.log(conteudoPost);  
-        let idPost = (Math.random() * 100000000000000000);
+    postar(conteudoPost, linkImg) { 
+        let idPost = new Date().getTime();
         let posts = JSON.parse(localStorage.getItem('posts-' + this.#usuario)) ?? [];
-        posts.push({ 'txtpost': conteudoPost, 'imagem': linkImg, 'idpost': idPost })
+        posts.push({ 'txtpost': conteudoPost, 'imagem': linkImg, 'idpost': idPost });
         localStorage.setItem('posts-' + this.#usuario, JSON.stringify(posts));
+        this.meusPosts();
     }
 
-
     meusPosts() {
-        let postsPessoais = JSON.parse(localStorage.getItem('posts-' + this.#usuario)) ?? [];
-        //console.log(postsPessoais);
         let content = '';
+
+        let postsPessoais = JSON.parse(localStorage.getItem('posts-' + this.#usuario)) ?? [];
+        postsPessoais = postsPessoais.sort((a, b) => b.idpost - a.idpost);
         postsPessoais.forEach(i => {
-            content += `<div class="feed">
-            <div class="head">
-                <div class="user">
-                    <div class="profile-photo">
-                        <img src="./images/profile-19.jpg" alt="">
+            let date = new Date().setTime(i.idpost)
+            content += `
+            <div class="feed">
+                <div class="head">
+                    <div class="user">
+                        <div class="profile-photo">
+                            <img src="./images/profile-19.jpg" alt="">
+                        </div>
+                        <div class="ingo">
+                            <h3>
+                            ${this.nome}
+                            </h3>
+                            <small>São Paulo, ${this._timeAgo(date)}</small>
+                        </div>
+                        <span class="edit">
+                            <i class="uil uil-ellipsis-h"></i>
+                        </span>
                     </div>
-                    <div class="ingo">
-                        <h3>
-                        ${this.nome}
-                        </h3>
-                        <small>São Paulo, 15 MINUTOS ATRÁS</small>
-                    </div>
-                    <span class="edit">
-                        <i class="uil uil-ellipsis-h"></i>
-                    </span>
                 </div>
-            </div>
-    
-            <div class="photo">
-                <img src="${i.imagem}" alt="">
-            </div>
-            <div class="caption">
-                                        <p>
-                                            <b></b>${i.txtpost}                                            
-                                        </p>
-                                    </div>
-    
-                                    <div class="comment text-muted">
-                                        Visualizar todos os 50 comentários
-                                    </div>
+        
+                <div class="photo">
+                    <img src="${i.imagem}" alt="">
+                </div>
+                <div class="caption">
+                    <p>
+                        <b></b>${i.txtpost}                                            
+                    </p>
+                </div>
+
+                <div class="comment text-muted">
+                    Visualizar todos os 50 comentários
+                </div>
             </div>`;
-
-
         });
-
-
 
         document.getElementById("mostra-feeds").innerHTML = content;
     }
 
-
     allPosts() {
+        this.meusPosts();
+        let content = document.getElementById("mostra-feeds").innerHTML;
+
         let minhasConexoes = JSON.parse(localStorage.getItem('amigos-' + this.#usuario)) ?? [];
-        let content = '';
-        minhasConexoes.forEach(i => {
-            let identificadorAmigo = i.useramigo;
-            let postsPessoais = JSON.parse(localStorage.getItem('posts-' + identificadorAmigo)) ?? [];
-            console.log(postsPessoais);
-
-            postsPessoais.forEach(i => {
-                content += `<div class="feed">
-            <div class="head">
-                <div class="user">
-                    <div class="profile-photo">
-                        <img src="./images/profile-15.jpg" alt="">
-                    </div>
-                    <div class="ingo">
-                        <h3>
-                        ${identificadorAmigo}
-                        </h3>
-                        <small>São Paulo, 15 MINUTOS ATRÁS</small>
-                    </div>
-                    <span class="edit">
-                        <i class="uil uil-ellipsis-h"></i>
-                    </span>
-                </div>
-            </div>
-    
-            <div class="photo">
-                <img src="${i.imagem}" alt="">
-            </div>
-
-            <span onclick="curtir(${i.idpost})"><i class="uil uil-heart"></i></span>
-            <span><i class="uil uil-comment-dots"></i></span>
+        minhasConexoes.forEach(amigo => {
+            let identificadorAmigo = amigo.useramigo;
+            let postDeAmigos = JSON.parse(localStorage.getItem('posts-' + identificadorAmigo)) ?? [];
             
-            <div class="liked-by">
-                <span>
-                    <img src="https://miro.medium.com/max/1400/1*g09N-jl7JtVjVZGcd-vL2g.jpeg"
-                        alt="">
-                </span>
-                <span>
-                    <img src="https://razoesparaacreditar.com/wp-content/uploads/2021/05/pesquisa-animais-risada-capa-1068x558.png"
-                        alt="">
-                </span>
-                <p>
-                    Curtido por <b>10</b>, <b>Pessoa(s)</b>
-                </p>
-            </div>
+            postDeAmigos.forEach(post => {
+                let date = new Date().setTime(post.idpost)
+                content += `
+                <div class="feed">
+                    <div class="head">
+                        <div class="user">
+                            <div class="profile-photo">
+                                <img src="./images/profile-15.jpg" alt="">
+                            </div>
+                            <div class="ingo">
+                                <h3>
+                                ${identificadorAmigo}
+                                </h3>
+                                <small>São Paulo, ${this._timeAgo(date)} </small>
+                            </div>
+                            <span class="edit">
+                                <i class="uil uil-ellipsis-h"></i>
+                            </span>
+                        </div>
+                    </div>
+            
+                    <div class="photo">
+                        <img src="${post.imagem}" alt="">
+                    </div>
 
-            <div class="caption">
-                                        <p>
-                                            <b></b>${i.txtpost}                                            
-                                        </p>
-                                    </div>
-    
-                                    <div class="comment text-muted">
-                                        Visualizar todos os comentários
-                                    </div>
-            </div>`;
+                    <span onclick="curtir(${post.idpost})"><i class="uil uil-heart"></i></span>
+                    <span><i class="uil uil-comment-dots"></i></span>
+                    
+                    <div class="liked-by">
+                        <span>
+                            <img src="https://miro.medium.com/max/1400/1*g09N-jl7JtVjVZGcd-vL2g.jpeg"
+                                alt="">
+                        </span>
+                        <span>
+                            <img src="https://razoesparaacreditar.com/wp-content/uploads/2021/05/pesquisa-animais-risada-capa-1068x558.png"
+                                alt="">
+                        </span>
+                        <p>
+                            Curtido por <b>10</b>, <b>Pessoa(s)</b>
+                        </p>
+                    </div>
 
+                    <div class="caption">
+                        <p>
+                            <b></b>${post.txtpost}                                            
+                        </p>
+                    </div>
 
+                    <div class="comment text-muted">
+                        Visualizar todos os comentários
+                    </div>
+                </div>`;
             });
         });
         document.getElementById("mostra-feeds").innerHTML = content;
@@ -223,79 +181,113 @@ class Usuario {
     conexoes() {
         let amigosAtuais = JSON.parse(localStorage.getItem('amigos-' + this.#usuario)) ?? [];
         let arrayAmigos = []
-        amigosAtuais.forEach(j => {
-            arrayAmigos.push(j.useramigo);
-        });
-        console.log(arrayAmigos);
-        let content = '';
-        let nomes = Usuario.lerNomeUsuarios();
-        nomes.forEach(i => {
-            console.log(i.user);
-            if (arrayAmigos.includes(i.user)) {
-                content += `<div class="feed">${i.nome}<button class="btn btn-primary btn-seguir" onclick="deixarSeguir('${i.user}')">Deixar de Seguir</buton></div>`;
-            } else {
-                content += `<div class="feed">${i.nome}<button class="btn btn-primary btn-seguir" onclick="seguir('${i.user}')">Seguir</buton></div>`;
-            }
-            //content += `<div class="feed">${i.nome}<button class="btn btn-primary btn-seguir" onclick="seguir('${i.user}')">Seguir</buton></div>`;                
+        amigosAtuais.forEach(amigo => {
+            arrayAmigos.push(amigo.useramigo);
         });
 
+        let content = '';
+        let nomes = Usuario.lerNomeUsuarios().filter(p => p.user != userLogado.user);
+        nomes.forEach(i => {
+            if (arrayAmigos.includes(i.user)) {
+                content += `
+                <div class="feed flexMiddleCenter">
+                    <span class="user w100">${i.nome}</span>
+                    <button class="btn btn-primary btn-seguir" onclick="deixarSeguir('${i.user}')">Deixar de seguir</buton>
+                </div>`;
+            } else {
+                content += `
+                <div class="feed flexMiddleCenter">
+                    <span class="user w100">${i.nome}</span>
+                    <button class="btn btn-primary btn-seguir" onclick="seguir('${i.user}')">Seguir</buton>
+                </div>`;
+            }
+        });
 
         document.getElementById("mostra-feeds").innerHTML = content;
     }
 
-    // get logado() {
-    //     return this.#logado;
-    // }
-
-    // get nome() {
-    //     return this.nome;
-    // }
+    MONTH_NAMES = [
+        'January', 'February', 'March', 'April', 'May', 'June',
+        'July', 'August', 'September', 'October', 'November', 'December'
+      ];
+      _getFormattedDate(date, prefomattedDate = false, hideYear = false) {
+        const day = date.getDate();
+        const month = MONTH_NAMES[date.getMonth()];
+        const year = date.getFullYear();
+        const hours = date.getHours();
+        let minutes = date.getMinutes();
+      
+        if (minutes < 10) {
+          // Adding leading zero to minutes
+          minutes = `0${ minutes }`;
+        }
+      
+        if (prefomattedDate) {
+          // Today at 10:20
+          // Yesterday at 10:20
+          return `${ prefomattedDate } at ${ hours }:${ minutes }`;
+        }
+      
+        if (hideYear) {
+          // 10. January at 10:20
+          return `${ day }. ${ month } at ${ hours }:${ minutes }`;
+        }
+      
+        // 10. January 2017. at 10:20
+        return `${ day }. ${ month } ${ year }. at ${ hours }:${ minutes }`;
+      }
+      _timeAgo(dateParam) {
+        if (!dateParam) {
+          return null;
+        }
+      
+        const date = typeof dateParam === 'object' ? dateParam : new Date(dateParam);
+        const DAY_IN_MS = 86400000; // 24 * 60 * 60 * 1000
+        const today = new Date();
+        const yesterday = new Date(today - DAY_IN_MS);
+        const seconds = Math.round((today - date) / 1000);
+        const minutes = Math.round(seconds / 60);
+        const isToday = today.toDateString() === date.toDateString();
+        const isYesterday = yesterday.toDateString() === date.toDateString();
+        const isThisYear = today.getFullYear() === date.getFullYear();
+      
+      
+        if (seconds < 5) {
+          return 'agora';
+        } else if (seconds < 60) {
+          return `${ seconds } segundos atrás`;
+        } else if (minutes < 60) {
+          return `${ minutes } minuto(s) atrás`;
+        } else if (isToday) {
+          return _getFormattedDate(date, 'Hoje'); // Today at 10:20
+        } else if (isYesterday) {
+          return _getFormattedDate(date, 'Ontem'); // Yesterday at 10:20
+        } else if (isThisYear) {
+          return _getFormattedDate(date, false, true); // 10. January at 10:20
+        }
+        return _getFormattedDate(date); // 10. January 2017. at 10:20
+      }
 }
 
 
+let userLogado = JSON.parse(localStorage.getItem('logado'));
 
-// const btnCadastaNewUser = document.getElementById('btn-cadastra-usuario');
-// const btnLogar = document.getElementById('btn-login');
-// const btnLogoff = document.getElementById('btn-logoff');
-
-// btnCadastaNewUser.onclick = () => {
-//     const nome = document.getElementById('input-nome').value;
-//     const user = document.getElementById('input-user').value;
-//     const senha = document.getElementById('input-senha').value;
-//     const novoUser = new Usuario(nome, user, senha);
-//     novoUser.adicionarUsuario();
-// }
-
-// btnLogar.onclick = () => {
-//     const user = document.getElementById('input-login-user').value;
-//     const senha = document.getElementById('input-login-senha').value;
-//     const User = new Usuario(null, user, senha);
-//     User.adicionarAmigo = 'amigo2';
-//     User.autenticarUsuario();
-// }
-
-//const amigos = new Usuario();
-//const listaAmigos = amigos.listarAmigos;
-//console.log('amigos ' + listaAmigos);
-//amigos.removerAmigo ='joão';
-
-
-
-let userLogado = JSON.parse(localStorage.getItem('logado')) ?? [];
-
-if (userLogado.length > 0) {
+if (userLogado != null) {
     //Capturo o e-mail do usuário logado
-    logado = userLogado[0]['user'];
+    logado = userLogado.user;
     var dadosUser = new Usuario(logado);
     dadosUser.lerNomeUsuario(logado);
 } else {
-    window.location.href = "cadastro.html";
+    window.location.href = "index.html";
 }
 
 //POSTAR 
 const btnCadastrarPost = document.getElementById('cadastrarPost');
 btnCadastrarPost.addEventListener('click', () => {
     const conteudoPost = document.getElementById('create-post').value;
+    if(conteudoPost.length == 0) return alert('Conteúdo do post não pode estar em branco!');
+
+
     let numeroImg = Math.floor(Math.random() * 10 + 1);
     const linkImg = `images/feed-${numeroImg}.jpg`;
     dadosUser.postar(conteudoPost, linkImg);
@@ -310,13 +302,6 @@ linkMeusPost.addEventListener('click', () => {
     dadosUser.meusPosts();
 });
 
-//IMAGEM DE PERFIL
-// const imgPerfil = document.getElementById('config-imagem-perfil');
-
-// imgPerfil.addEventListener('click', () => {
-//     //dadosUser.meusPosts();
-// });
-
 
 //CONEXÕES
 const btnConexoes = document.getElementById('btn-conexoes');
@@ -330,10 +315,9 @@ function seguir(userAmigo) {
 }
 
 function deixarSeguir(userAmigo) {
-    //alert('Deixar de Seguir');
     dadosUser.removerAmigo = userAmigo;
 }
-//console.log(dadosUser.listarAmigos);
+
 
 //HOME
 const btnHome = document.getElementById('btn-home');
@@ -351,12 +335,10 @@ function curtir(idpost){
     //alert(idpost);
 }
 
-
 //SAIR
 const btnLogoff = document.getElementById('logoff');
 btnLogoff.addEventListener('click', () => {
-    //alert('Sair');
     if(dadosUser.logoff){
-        window.location.href = "cadastro.html";
+        window.location.href = "index.html";
     };
 });

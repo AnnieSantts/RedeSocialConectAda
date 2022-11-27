@@ -16,6 +16,17 @@ class cadastraUsuario {
             if (this.#senha != this.#repetesenha) {
                 alert('Senha digitadas não conferem')
             } else {
+                let usuariosCadastrados = JSON.parse(localStorage.getItem("usuarios")) ?? [];
+
+                const usuarioExiste = usuariosCadastrados.find((item) => {
+                    return item.user == this.#email;
+                });
+
+                if (usuarioExiste) {
+                    alert('Email já cadastrado');
+                    return;
+                }
+                
                 //Passou nas validações
                 let users = JSON.parse(localStorage.getItem('usuarios')) ?? [{ 'nome': 'admin', 'user': 'admin@gmail.com', 'senha': 'admin', 'tipo': 'admin' }];
                 users.push({ 'nome': this.#nome, 'user': this.#email, 'senha': this.#senha, 'tipo': 'user' });
@@ -23,13 +34,12 @@ class cadastraUsuario {
                 alert('Usuário cadastrado com sucesso')
                 document.getElementById('main-login').style.display = 'block';
                 document.getElementById('main-cadastro').style.display = 'none';
-            }
+            } 
         } else {
             alert('Sua senha precisa de pelo menos 4 caracteres')
         }
     }
 }
-
 
 const btnCadastrarNewUSer = document.getElementById('botaoCadastro');
 const btnCadastro = document.getElementById('btn-cadastro');
