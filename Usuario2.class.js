@@ -1,3 +1,6 @@
+
+    
+
 class Usuario {
     #usuario;
     nome;
@@ -71,6 +74,7 @@ class Usuario {
         let postsPessoais = JSON.parse(localStorage.getItem('posts-' + this.#usuario)) ?? [];
         postsPessoais = postsPessoais.sort((a, b) => b.idpost - a.idpost);
         postsPessoais.forEach(i => {
+            let date = new Date().setTime(i.idpost)
             content += `
             <div class="feed">
                 <div class="head">
@@ -82,7 +86,7 @@ class Usuario {
                             <h3>
                             ${this.nome}
                             </h3>
-                            <small>São Paulo, 15 MINUTOS ATRÁS</small>
+                            <small>São Paulo, ${this._timeAgo(date)}</small>
                         </div>
                         <span class="edit">
                             <i class="uil uil-ellipsis-h"></i>
@@ -116,8 +120,9 @@ class Usuario {
         minhasConexoes.forEach(amigo => {
             let identificadorAmigo = amigo.useramigo;
             let postDeAmigos = JSON.parse(localStorage.getItem('posts-' + identificadorAmigo)) ?? [];
-
+            
             postDeAmigos.forEach(post => {
+                let date = new Date().setTime(post.idpost)
                 content += `
                 <div class="feed">
                     <div class="head">
@@ -129,7 +134,7 @@ class Usuario {
                                 <h3>
                                 ${identificadorAmigo}
                                 </h3>
-                                <small>São Paulo, 15 MINUTOS ATRÁS</small>
+                                <small>São Paulo, ${this._timeAgo(date)} </small>
                             </div>
                             <span class="edit">
                                 <i class="uil uil-ellipsis-h"></i>
@@ -200,6 +205,68 @@ class Usuario {
 
         document.getElementById("mostra-feeds").innerHTML = content;
     }
+
+    MONTH_NAMES = [
+        'January', 'February', 'March', 'April', 'May', 'June',
+        'July', 'August', 'September', 'October', 'November', 'December'
+      ];
+      _getFormattedDate(date, prefomattedDate = false, hideYear = false) {
+        const day = date.getDate();
+        const month = MONTH_NAMES[date.getMonth()];
+        const year = date.getFullYear();
+        const hours = date.getHours();
+        let minutes = date.getMinutes();
+      
+        if (minutes < 10) {
+          // Adding leading zero to minutes
+          minutes = `0${ minutes }`;
+        }
+      
+        if (prefomattedDate) {
+          // Today at 10:20
+          // Yesterday at 10:20
+          return `${ prefomattedDate } at ${ hours }:${ minutes }`;
+        }
+      
+        if (hideYear) {
+          // 10. January at 10:20
+          return `${ day }. ${ month } at ${ hours }:${ minutes }`;
+        }
+      
+        // 10. January 2017. at 10:20
+        return `${ day }. ${ month } ${ year }. at ${ hours }:${ minutes }`;
+      }
+      _timeAgo(dateParam) {
+        if (!dateParam) {
+          return null;
+        }
+      
+        const date = typeof dateParam === 'object' ? dateParam : new Date(dateParam);
+        const DAY_IN_MS = 86400000; // 24 * 60 * 60 * 1000
+        const today = new Date();
+        const yesterday = new Date(today - DAY_IN_MS);
+        const seconds = Math.round((today - date) / 1000);
+        const minutes = Math.round(seconds / 60);
+        const isToday = today.toDateString() === date.toDateString();
+        const isYesterday = yesterday.toDateString() === date.toDateString();
+        const isThisYear = today.getFullYear() === date.getFullYear();
+      
+      
+        if (seconds < 5) {
+          return 'agora';
+        } else if (seconds < 60) {
+          return `${ seconds } segundos atrás`;
+        } else if (minutes < 60) {
+          return `${ minutes } minuto(s) atrás`;
+        } else if (isToday) {
+          return _getFormattedDate(date, 'Hoje'); // Today at 10:20
+        } else if (isYesterday) {
+          return _getFormattedDate(date, 'Ontem'); // Yesterday at 10:20
+        } else if (isThisYear) {
+          return _getFormattedDate(date, false, true); // 10. January at 10:20
+        }
+        return _getFormattedDate(date); // 10. January 2017. at 10:20
+      }
 }
 
 
