@@ -46,7 +46,7 @@ const autenticarLoginDigitado = (e) => {
     // Usa o retorno da função autenticarUsuario salvo na variável isAutenticado para verificar se o login foi bem sucedido
     if (isAutenticado) {
         // Redireciona a página para o index
-        window.location.href = "./index.html";
+        window.location.href = "./pagina-inicial.html";
         //alert('OK');
     } else {
         alert("Login incorreto")

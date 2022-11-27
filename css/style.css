@@ -379,6 +379,15 @@ main .container .left .profile {
 }
 
 /********************FEEDS*********************/
+.flexMiddleCenter {
+    display: flex;
+    align-items: center
+}
+
+.w100 {
+    width: 100%;
+}
+
 .middle .feeds .feed {
     background: var(--color-white);
     border-radius: var(--card-border-radius);

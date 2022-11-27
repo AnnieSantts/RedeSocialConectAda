@@ -13,7 +13,7 @@ class Postagem{
     }
 
     criarPost(tituloDoPost, texto, data, usuario){
-console.log(`novo post:`)
+        console.log(`novo post:`)
     }
 
     apagarComentario(){
