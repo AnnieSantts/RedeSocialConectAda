@@ -31,3 +31,15 @@ body {
   border-top-left-radius: 0;
   border-top-right-radius: 0;
 }
+
+.form-floating {
+  padding-bottom: 0.5rem;
+}
+
+.botao-cadastro:hover {
+  cursor: pointer;
+}
+
+.ultimo-input {
+  margin-top: -10px ;
+}

@@ -27,8 +27,6 @@ console.log(`novo post:`)
     }
 }
 
-
-
 post1 = new Postagem('amarelo', 'textopost', 'datadehoje', 'usuariofulano')
 
 console.log(post1)

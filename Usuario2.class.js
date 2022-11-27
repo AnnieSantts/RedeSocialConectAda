@@ -26,50 +26,10 @@ class Usuario {
         return users;
     }
 
-
-    // adicionarUsuario() {
-    //     //Antes de adicionar o usuário preciso verificar se existe outro com mesmo nome
-
-    //     //const verificaExistenciaUsuarioMesmoUser = pesquisarUsuario(nome);
-
-    //     //Ao tentar adicionar um usuário verifico se já não existe outro com mesmo nome (nome de usuário)
-
-    //     //const existeUsers = pesquisarUsuario(this.usuario);
-
-    //     let users = JSON.parse(localStorage.getItem('usuarios')) ?? [];
-
-    //     users.push({ 'nome': this.nome, 'user': this.#usuario, 'senha': this.#senha, 'tipo': 'user' });
-
-    //     localStorage.setItem('usuarios', JSON.stringify(users))
-
-    // }
-
-    // autenticarUsuario() {
-    //     let users = JSON.parse(localStorage.getItem('usuarios')) ?? [];
-    //     users.forEach(i => {
-    //         if (i.user === this.#usuario && i.senha === this.#senha) {
-    //             this.#logado = true;
-    //             return null;
-    //         }
-    //     });
-    //     if (this.#logado === true) {
-    //         console.log('Usuário logado');
-    //     }
-    // }
-
-
     logoff() {
         localStorage.setItem('logado', []);
         return true;
     }
-
-    // listarAmigos() {
-    //     console.log('amigos-' + this.#usuario);
-    //     let usersFriends = JSON.parse(localStorage.getItem('amigos-' + this.#usuario)) ?? [];
-
-    // }
-
-
 
     set adicionarAmigo(useramigo) {
         this.#amigo = useramigo;
@@ -78,8 +38,7 @@ class Usuario {
         localStorage.setItem('amigos-' + this.#usuario, JSON.stringify(amigos));
     }
 
-    set removerAmigo(nomeamigo) {
-        //this.#amigo = nomeamigo;        
+    set removerAmigo(nomeamigo) {      
         let amigos = JSON.parse(localStorage.getItem('amigos-' + this.#usuario)) ?? [];
         amigos.forEach(e => {
             console.log(e.useramigo, nomeamigo);
@@ -100,8 +59,7 @@ class Usuario {
         localStorage.setItem('curtidas', JSON.stringify(curtidas));
     }
 
-    postar(conteudoPost, linkImg) {
-        //console.log(conteudoPost);  
+    postar(conteudoPost, linkImg) { 
         let idPost = (Math.random() * 100000000000000000);
         let posts = JSON.parse(localStorage.getItem('posts-' + this.#usuario)) ?? [];
         posts.push({ 'txtpost': conteudoPost, 'imagem': linkImg, 'idpost': idPost })
@@ -111,7 +69,6 @@ class Usuario {
 
     meusPosts() {
         let postsPessoais = JSON.parse(localStorage.getItem('posts-' + this.#usuario)) ?? [];
-        //console.log(postsPessoais);
         let content = '';
         postsPessoais.forEach(i => {
             content += `<div class="feed">
@@ -145,11 +102,7 @@ class Usuario {
                                         Visualizar todos os 50 comentários
                                     </div>
             </div>`;
-
-
         });
-
-
 
         document.getElementById("mostra-feeds").innerHTML = content;
     }
@@ -161,7 +114,6 @@ class Usuario {
         minhasConexoes.forEach(i => {
             let identificadorAmigo = i.useramigo;
             let postsPessoais = JSON.parse(localStorage.getItem('posts-' + identificadorAmigo)) ?? [];
-            console.log(postsPessoais);
 
             postsPessoais.forEach(i => {
                 content += `<div class="feed">
@@ -214,7 +166,6 @@ class Usuario {
                                     </div>
             </div>`;
 
-
             });
         });
         document.getElementById("mostra-feeds").innerHTML = content;
@@ -236,56 +187,19 @@ class Usuario {
             } else {
                 content += `<div class="feed">${i.nome}<button class="btn btn-primary btn-seguir" onclick="seguir('${i.user}')">Seguir</buton></div>`;
             }
-            //content += `<div class="feed">${i.nome}<button class="btn btn-primary btn-seguir" onclick="seguir('${i.user}')">Seguir</buton></div>`;                
         });
 
 
         document.getElementById("mostra-feeds").innerHTML = content;
     }
-
-    // get logado() {
-    //     return this.#logado;
-    // }
-
-    // get nome() {
-    //     return this.nome;
-    // }
 }
 
 
+let userLogado = JSON.parse(localStorage.getItem('logado'));
 
-// const btnCadastaNewUser = document.getElementById('btn-cadastra-usuario');
-// const btnLogar = document.getElementById('btn-login');
-// const btnLogoff = document.getElementById('btn-logoff');
-
-// btnCadastaNewUser.onclick = () => {
-//     const nome = document.getElementById('input-nome').value;
-//     const user = document.getElementById('input-user').value;
-//     const senha = document.getElementById('input-senha').value;
-//     const novoUser = new Usuario(nome, user, senha);
-//     novoUser.adicionarUsuario();
-// }
-
-// btnLogar.onclick = () => {
-//     const user = document.getElementById('input-login-user').value;
-//     const senha = document.getElementById('input-login-senha').value;
-//     const User = new Usuario(null, user, senha);
-//     User.adicionarAmigo = 'amigo2';
-//     User.autenticarUsuario();
-// }
-
-//const amigos = new Usuario();
-//const listaAmigos = amigos.listarAmigos;
-//console.log('amigos ' + listaAmigos);
-//amigos.removerAmigo ='joão';
-
-
-
-let userLogado = JSON.parse(localStorage.getItem('logado')) ?? [];
-
-if (userLogado.length > 0) {
+if (userLogado != null) {
     //Capturo o e-mail do usuário logado
-    logado = userLogado[0]['user'];
+    logado = userLogado.user;
     var dadosUser = new Usuario(logado);
     dadosUser.lerNomeUsuario(logado);
 } else {
@@ -310,13 +224,6 @@ linkMeusPost.addEventListener('click', () => {
     dadosUser.meusPosts();
 });
 
-//IMAGEM DE PERFIL
-// const imgPerfil = document.getElementById('config-imagem-perfil');
-
-// imgPerfil.addEventListener('click', () => {
-//     //dadosUser.meusPosts();
-// });
-
 
 //CONEXÕES
 const btnConexoes = document.getElementById('btn-conexoes');
@@ -330,10 +237,9 @@ function seguir(userAmigo) {
 }
 
 function deixarSeguir(userAmigo) {
-    //alert('Deixar de Seguir');
     dadosUser.removerAmigo = userAmigo;
 }
-//console.log(dadosUser.listarAmigos);
+
 
 //HOME
 const btnHome = document.getElementById('btn-home');
@@ -351,11 +257,9 @@ function curtir(idpost){
     //alert(idpost);
 }
 
-
 //SAIR
 const btnLogoff = document.getElementById('logoff');
 btnLogoff.addEventListener('click', () => {
-    //alert('Sair');
     if(dadosUser.logoff){
         window.location.href = "cadastro.html";
     };

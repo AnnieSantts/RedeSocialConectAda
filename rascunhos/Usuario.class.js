@@ -49,12 +49,6 @@ export default class Usuario {
     get listarAmigos() {
         let users = JSON.parse(localStorage.getItem('amigos-' + this.#usuario)) ?? [];
         return users;
-        /*users.forEach(i => {
-            console.log(i.useramigo);
-            const li = document.createElement('li');
-            li.innerHTML = `<div class="${i.useramigo}" id="${i}">${i.useramigo}</div>`;
-            return ul.appendChild(li);
-        });*/
     }
 
     set adicionarAmigo(useramigo) {
@@ -79,7 +73,6 @@ export default class Usuario {
 }
 
 
-
 const btnCadastaNewUser = document.getElementById('btn-cadastra-usuario');
 const btnLogar = document.getElementById('btn-login');
 const btnLogoff = document.getElementById('btn-logoff');
@@ -100,8 +93,4 @@ btnLogar.onclick = () => {
     User.autenticarUsuario();
 }
 
-//const amigos = new Usuario();
-//const listaAmigos = amigos.listarAmigos;
-//console.log('amigos ' + listaAmigos);
-//amigos.removerAmigo ='joão';
 
