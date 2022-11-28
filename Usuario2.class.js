@@ -122,12 +122,9 @@ class Usuario {
                     <img src="${post.imagem}" alt="">
                 </div>
 
-                <span onclick="curtir(${post.idpost})"><i class="uil uil-heart size20"></i></span>
-                <span><i class="uil uil-comment-dots size20"></i></span>
+                <span onclick="excluirPostagem(${post.idpost})"><i class="uil uil-trash size20"></i></span>
+                               
                 
-                <div class="comment italic text-muted">
-                    Sem atividade no momento
-                </div>
             </div>`;
         });
 
@@ -189,7 +186,7 @@ class Usuario {
                     <img src="${post.imagem}" alt="">
                 </div>
 
-                <span onclick="curtir(${post.idpost})"><i class="uil uil-heart size20"></i></span>
+                <span onclick="curtir(${post.idpost})"><i class="uil uil-heart size20" id="coracao-${post.idpost}></i></span>
                 <span><i class="uil uil-comment-dots size20"></i></span>
                 
                 <div class="liked-by">
@@ -203,10 +200,8 @@ class Usuario {
                     </span>`
             }
 
-
-
             content += `<p>
-                        Curtido por <b>${totalCurtidas} pessoa(s)</b>
+                        Curtido <b>${totalCurtidas} vezes(s)</b>
                     </p>
                 </div>
                 
@@ -313,21 +308,27 @@ class Usuario {
     }
 
     set removerUser(user) {
-        //console.log('apagaruser' + user);
         let usuarios = JSON.parse(localStorage.getItem('usuarios')) ?? [];
         let userRestante = [];
         usuarios.forEach(i => {
             if (i.user != user) {
-                userRestante.push({ 'nome':i.nome, 'user':i.user, 'senha':i.senha, 'tipo':i.tipo});
-                //console.log('excluir '+user);
+                userRestante.push({ 'nome': i.nome, 'user': i.user, 'senha': i.senha, 'tipo': i.tipo });
             }
-            
+
         })
         localStorage.setItem('usuarios', JSON.stringify(userRestante));
-        //console.log(userRestante);
-        
+    }
 
-        //console.log(usuarios);
+    set removerPostagem(idPost) {
+        let postagens = JSON.parse(localStorage.getItem('posts-' + this.#usuario)) ?? [];
+        let postagensRestante = [];
+        postagens.forEach(p=>{
+            if(p.idpost != idPost){
+                postagensRestante.push({'txtpost':p.txtpost,'imagem':p.imagem,'idpost':p.idpost,'autor':p.autor});
+            }
+        })
+        localStorage.setItem('posts-' + this.#usuario, JSON.stringify(postagensRestante));      
+        
     }
 
     MONTH_NAMES = [
@@ -481,4 +482,10 @@ function comentarPost(post) {
     dadosUser.comentarPost = post;
 }
 
+
+function excluirPostagem(idPost) {
+    //alert(idPost);
+    dadosUser.removerPostagem = idPost;
+    dadosUser.meusPosts();
+}
 
