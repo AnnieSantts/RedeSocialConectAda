@@ -66,12 +66,22 @@ class Usuario {
         let idPost = new Date().getTime();
         let posts = JSON.parse(localStorage.getItem('posts-' + this.#usuario)) ?? [];
         posts.push({ 'txtpost': conteudoPost, 'imagem': linkImg, 'idpost': idPost, autor: this.#usuario });
-
         localStorage.setItem('posts-' + this.#usuario, JSON.stringify(posts));
         this.allPosts();
     }
 
-    apagarUsuario(user){
+    set comentarPost(post) {
+        console.log('Comentar '.post);
+        const comment = document.getElementById('txt-comentario-' + post).value;
+        let comentarios = JSON.parse(localStorage.getItem('comentario-' + post)) ?? [];
+        comentarios.push({ 'comentario': comment, autor: this.#usuario });
+        localStorage.setItem('comentario-' + post, JSON.stringify(comentarios));
+        this.allPosts();
+        //comentarPost(post)
+        //let comentarios = JSON.parse(localStorage.getItem('comentario-'+post)) ?? [];
+    }
+
+    apagarUsuario(user) {
 
     }
 
@@ -197,15 +207,32 @@ class Usuario {
             }
 
 
+
             content += `<p>
                         Curtido por <b>${totalCurtidas} pessoa(s)</b>
                     </p>
                 </div>
+                
+                <div class="comment text-muted ">                                 
+                    <input type="text" placeholder="Digite aqui seu comentário" id="txt-comentario-${post.idpost}">
+                    <input type="button" value="Comentar" class="btn btn-primary" onclick="comentarPost(${post.idpost})">                
+            </div>           
 
-                <div class="comment text-muted">
-                    Visualizar todos os comentários
-                </div>
-            </div>`;
+            `;
+
+            content += `<div class="comment text-muted w100">
+            Comentários Recebidos
+        </div>`;
+
+
+            let comentarios = JSON.parse(localStorage.getItem('comentario-' + post.idpost)) ?? [];
+            comentarios.forEach(coment => {
+                let txtComentario = coment.comentario;
+                content += `<div class="comment text-muted w100">${txtComentario}</div>`;
+            });
+
+            content += `</div>`;
+
         });
 
         document.getElementById("mostra-feeds").innerHTML = content;
@@ -432,4 +459,9 @@ btnLogoff.addEventListener('click', () => {
 function apagarUsuario(user) {
     dadosUser.removerUser = user;
 }
+
+function comentarPost(post) {
+    dadosUser.comentarPost = post;
+}
+
 
