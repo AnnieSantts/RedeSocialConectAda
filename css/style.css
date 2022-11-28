@@ -88,6 +88,8 @@ img {
 .btn-primary {
     background: var(--color-primary);
     color: white;
+    padding: auto;
+    margin: 5px;
 }
 
 
@@ -378,6 +380,26 @@ main .container .left .profile {
     margin-right: 1rem;
 }
 
+/*************************CRIAR COMENTARIO****************************/
+.middle .create-comentario {
+    width: 100%;
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    margin-top: 1rem;
+    background: var(--color-white);
+    padding: 0.4rem var(--card-padding);
+    border-radius: var(--border-radius);
+}
+
+.middle .create-comentario input[type="text"] {
+    justify-self: start;
+    width: 100%;
+    padding-left: 1rem;
+    background: transparent;
+    color: var(--color-dark);
+    margin-right: 1rem;
+}
 /********************FEEDS*********************/
 .flexMiddleCenter {
     display: flex;

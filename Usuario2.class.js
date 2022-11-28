@@ -1,6 +1,7 @@
 
     
-
+let users = JSON.parse(localStorage.getItem('usuarios')) ?? [];
+console.log(users);
 class Usuario {
     #usuario;
     nome;
@@ -60,13 +61,22 @@ class Usuario {
         localStorage.setItem('curtidas', JSON.stringify(curtidas));
     }
 
-    postar(conteudoPost, linkImg) { 
+    postar(conteudoPost) { 
         let idPost = new Date().getTime();
         let posts = JSON.parse(localStorage.getItem('posts-' + this.#usuario)) ?? [];
         posts.push({ 'txtpost': conteudoPost, 'imagem': linkImg, 'idpost': idPost });
         localStorage.setItem('posts-' + this.#usuario, JSON.stringify(posts));
         this.meusPosts();
     }
+
+    // comentar(conteudoComentario) { 
+    //     let idComentario = new Date().getTime();
+    //     let comentarios = JSON.parse(localStorage.getItem('comentarios-' + this.#usuario)) ?? [];
+    //     comentario.push({ 'txtpost': conteudoComentario, 'idcomentario': idComentario });
+    //     localStorage.setItem('comentarios-' + this.#usuario, JSON.stringify(comentarios));
+    //     this.meusComentarios();
+    // }
+
 
     meusPosts() {
         let content = '';
@@ -97,14 +107,38 @@ class Usuario {
                 <div class="photo">
                     <img src="${i.imagem}" alt="">
                 </div>
+
+                <span onclick="curtir(${i.idpost})"><i class="uil uil-heart"></i></span>
+              
+                
+                <div class="liked-by">
+                    <span>
+                        <img src="https://miro.medium.com/max/1400/1*g09N-jl7JtVjVZGcd-vL2g.jpeg"
+                            alt="">
+                    </span>
+                    <span>
+                        <img src="https://razoesparaacreditar.com/wp-content/uploads/2021/05/pesquisa-animais-risada-capa-1068x558.png"
+                            alt="">
+                    </span>
+                    <p>
+                        Curtido por <b>10</b>, <b>Pessoa(s)</b>
+                    </p>
+                </div>
+
                 <div class="caption">
                     <p>
                         <b></b>${i.txtpost}                                            
                     </p>
+                </div> 
+                
+                <div class="comment text-muted"> 
+                <form action="" class="create-comentario">
+                <div class="profile-photo">
+                    <img src="images/profile-19.jpg">
                 </div>
-
-                <div class="comment text-muted">
-                    Visualizar todos os 50 comentários
+                <input type="text" placeholder="Digite aqui seu comentário" id="create-comentario">
+                <input type="button" value="Comentar" class="btn btn-primary" id="comentarPost">
+            </form>
                 </div>
             </div>`;
         });
@@ -169,8 +203,14 @@ class Usuario {
                         </p>
                     </div>
 
-                    <div class="comment text-muted">
-                        Visualizar todos os comentários
+                    <div class="comment text-muted"> 
+                    <form action="" class="create-post">
+                    <div class="profile-photo">
+                        <img src="images/profile-19.jpg">
+                    </div>
+                    <input type="text" placeholder="Digite aqui seu comentário" id="create-comentario">
+                    <input type="button" value="Comentar" class="btn btn-primary" id="comentarPost">
+                </form>
                     </div>
                 </div>`;
             });
@@ -193,17 +233,42 @@ class Usuario {
                 <div class="feed flexMiddleCenter">
                     <span class="user w100">${i.nome}</span>
                     <button class="btn btn-primary btn-seguir" onclick="deixarSeguir('${i.user}')">Deixar de seguir</buton>
+                    <button class="btn btn-primary btn-seguir" onclick="apagarUsuario('${i.user}')">Apagar Usuário</buton>
                 </div>`;
             } else {
                 content += `
                 <div class="feed flexMiddleCenter">
                     <span class="user w100">${i.nome}</span>
                     <button class="btn btn-primary btn-seguir" onclick="seguir('${i.user}')">Seguir</buton>
+                    <button class="btn btn-primary btn-seguir" onclick="apagarUsuario('${i.user}')">Apagar Usuário</buton>
                 </div>`;
             }
         });
 
         document.getElementById("mostra-feeds").innerHTML = content;
+    }
+
+    get isAdmin() {
+        let userLogado = JSON.parse(localStorage.getItem('logado'));
+        return userLogado.user === 'admin@gmail.com';
+    } 
+
+    apagarUsuario(usuarioId){
+        if(this.isAdmin){
+            this.#apagarUsuario(usuarioId);
+        }
+    }
+    #apagarUsuario(usuarioId){
+        let users = JSON.parse(localStorage.getItem('usuarios')) ?? [];
+        users.forEach(user =>{
+            if(user.user === usuarioId){
+                const index = users.indexOf(user);
+                users.splice(index, 1);
+                
+            }
+      })
+      localStorage.setItem('usuarios', JSON.stringify(users));
+      return;
     }
 
     MONTH_NAMES = [
@@ -212,7 +277,7 @@ class Usuario {
       ];
       _getFormattedDate(date, prefomattedDate = false, hideYear = false) {
         const day = date.getDate();
-        const month = MONTH_NAMES[date.getMonth()];
+        const month = this.MONTH_NAMES[date.getMonth()];
         const year = date.getFullYear();
         const hours = date.getHours();
         let minutes = date.getMinutes();
@@ -259,15 +324,16 @@ class Usuario {
         } else if (minutes < 60) {
           return `${ minutes } minuto(s) atrás`;
         } else if (isToday) {
-          return _getFormattedDate(date, 'Hoje'); // Today at 10:20
+          return this._getFormattedDate(date, 'Hoje'); // Today at 10:20
         } else if (isYesterday) {
-          return _getFormattedDate(date, 'Ontem'); // Yesterday at 10:20
+          return this._getFormattedDate(date, 'Ontem'); // Yesterday at 10:20
         } else if (isThisYear) {
-          return _getFormattedDate(date, false, true); // 10. January at 10:20
+          return this._getFormattedDate(date, false, true); // 10. January at 10:20
         }
-        return _getFormattedDate(date); // 10. January 2017. at 10:20
+        return this._getFormattedDate(date); // 10. January 2017. at 10:20
       }
 }
+
 
 
 let userLogado = JSON.parse(localStorage.getItem('logado'));
@@ -287,12 +353,21 @@ btnCadastrarPost.addEventListener('click', () => {
     const conteudoPost = document.getElementById('create-post').value;
     if(conteudoPost.length == 0) return alert('Conteúdo do post não pode estar em branco!');
 
-
     let numeroImg = Math.floor(Math.random() * 10 + 1);
     const linkImg = `images/feed-${numeroImg}.jpg`;
     dadosUser.postar(conteudoPost, linkImg);
     document.getElementById('create-post').value = "";
 });
+
+//COMENTARIOS 
+// const btnComentar = document.getElementById('comentarPost');
+// btnComentar.addEventListener('click', () => {
+//     const conteudoComentario = document.getElementById('create-comentario').value;
+//     if(conteudoComentario.length == 0) return alert('Conteúdo do comentario não pode estar em branco!');
+
+//     dadosUser.comentar(conteudoComentario);
+//     document.getElementById('create-comentario').value = "";
+// });
 
 
 //MEUS POSTS 
