@@ -46,7 +46,7 @@ class Usuario {
         this.filtrarAmigos();
     }
 
-    set removerAmigo(nomeamigo) {      
+    set removerAmigo(nomeamigo) {
         let amigos = JSON.parse(localStorage.getItem('amigos-' + this.#usuario)) ?? [];
         amigos = amigos.filter(amigo => amigo.useramigo != nomeamigo);
 
@@ -55,21 +55,23 @@ class Usuario {
         this.filtrarAmigos();
     }
 
-    set curtirPost(idPost){
+    set curtirPost(idPost) {
         const curtidoPor = this.#usuario;
         let curtidas = JSON.parse(localStorage.getItem('curtidas')) ?? [];
         curtidas.push({ 'curtida': idPost, 'por': curtidoPor });
         localStorage.setItem('curtidas', JSON.stringify(curtidas));
     }
 
-    postar(conteudoPost, linkImg) { 
+    postar(conteudoPost, linkImg) {
         let idPost = new Date().getTime();
         let posts = JSON.parse(localStorage.getItem('posts-' + this.#usuario)) ?? [];
         posts.push({ 'txtpost': conteudoPost, 'imagem': linkImg, 'idpost': idPost, autor: this.#usuario });
-        
+
         localStorage.setItem('posts-' + this.#usuario, JSON.stringify(posts));
         this.allPosts();
     }
+
+
 
     meusPosts() {
         let content = '';
@@ -127,8 +129,12 @@ class Usuario {
         let content = '';
         let postsGerais = JSON.parse(localStorage.getItem('posts-' + this.#usuario)) ?? [];
 
+
+        let recuperaCurtidas = JSON.parse(localStorage.getItem('curtidas')) ?? []
+
+
         const minhasConexoes = JSON.parse(localStorage.getItem('amigos-' + this.#usuario)) ?? [];
-        minhasConexoes.forEach(({ useramigo }) => {            
+        minhasConexoes.forEach(({ useramigo }) => {
             const postDeAmigos = JSON.parse(localStorage.getItem('posts-' + useramigo)) ?? [];
             postsGerais = postsGerais.concat(postDeAmigos);
         });
@@ -137,6 +143,13 @@ class Usuario {
         postsGerais.forEach(post => {
             const date = new Date().setTime(post.idpost);
             const { logo, nome } = Usuario.infoUsuario(post.autor);
+
+            let totalCurtidas = 0;
+            recuperaCurtidas.forEach(id => {
+                if (id.curtida == post.idpost) {
+                    totalCurtidas++;
+                }
+            })
 
             content += `
             <div class="feed">
@@ -178,7 +191,7 @@ class Usuario {
                         <img src="./images/profile-${Math.floor(Math.random() * 20 + 1)}.jpg" alt="">
                     </span>
                     <p>
-                        Curtido por <b>10 pessoa(s)</b>
+                        Curtido por <b>${totalCurtidas} pessoa(s)</b>
                     </p>
                 </div>
 
@@ -198,7 +211,7 @@ class Usuario {
         amigosAtuais = amigosAtuais.map(amigo => amigo.useramigo);
 
         const displayAmigos = () => {
-            if(amigosAtuais.length == 0) {
+            if (amigosAtuais.length == 0) {
                 return document.getElementById("friendsDiv").innerHTML = `
                     <div class="no-friend italic text-muted">
                         Amigo não encontrado
@@ -222,8 +235,8 @@ class Usuario {
 
             return document.getElementById("friendsDiv").innerHTML = content;
         };
-        
-        if(amigosAtuais.length == 0) {
+
+        if (amigosAtuais.length == 0) {
             return document.getElementById("friendsDiv").innerHTML = `
                 <div class="no-friend italic text-muted">
                     Sem amigos no momento, clique em conexões e inicie seu circulo de amizades
@@ -231,7 +244,7 @@ class Usuario {
             `;
         }
 
-        if(nomeAmigo.length == 0) return displayAmigos();
+        if (nomeAmigo.length == 0) return displayAmigos();
 
         amigosAtuais = amigosAtuais.filter(amigo => {
             const { nome } = Usuario.infoUsuario(amigo);
@@ -268,7 +281,7 @@ class Usuario {
     MONTH_NAMES = [
         'January', 'February', 'March', 'April', 'May', 'June',
         'July', 'August', 'September', 'October', 'November', 'December'
-      ];
+    ];
 
     _getFormattedDate(date, prefomattedDate = false, hideYear = false) {
         const day = date.getDate();
@@ -276,30 +289,30 @@ class Usuario {
         const year = date.getFullYear();
         const hours = date.getHours();
         let minutes = date.getMinutes();
-        
+
         if (minutes < 10) {
             // Adding leading zero to minutes
-            minutes = `0${ minutes }`;
+            minutes = `0${minutes}`;
         }
-        
+
         if (prefomattedDate) {
             // Today at 10:20
             // Yesterday at 10:20
-            return `${ prefomattedDate } at ${ hours }:${ minutes }`;
+            return `${prefomattedDate} at ${hours}:${minutes}`;
         }
-        
+
         if (hideYear) {
             // 10. January at 10:20
-            return `${ day }. ${ month } at ${ hours }:${ minutes }`;
+            return `${day}. ${month} at ${hours}:${minutes}`;
         }
-        
+
         // 10. January 2017. at 10:20
-        return `${ day }. ${ month } ${ year }. at ${ hours }:${ minutes }`;
+        return `${day}. ${month} ${year}. at ${hours}:${minutes}`;
     }
 
     _timeAgo(dateParam) {
         if (!dateParam) return;
-        
+
         const date = typeof dateParam === 'object' ? dateParam : new Date(dateParam);
         const DAY_IN_MS = 86400000; // 24 * 60 * 60 * 1000
         const today = new Date();
@@ -309,13 +322,13 @@ class Usuario {
         const isToday = today.toDateString() === date.toDateString();
         const isYesterday = yesterday.toDateString() === date.toDateString();
         const isThisYear = today.getFullYear() === date.getFullYear();
-        
+
         if (seconds < 5) {
             return 'agora';
         } else if (seconds < 60) {
-            return `${ seconds } segundos atrás`;
+            return `${seconds} segundos atrás`;
         } else if (minutes < 60) {
-            return `${ minutes } minuto(s) atrás`;
+            return `${minutes} minuto(s) atrás`;
         } else if (isToday) {
             return this._getFormattedDate(date, 'Hoje'); // Today at 10:20
         } else if (isYesterday) {
@@ -345,7 +358,7 @@ elProfilePicture.forEach(el => el.src = `./images/${currentUser.logo}.jpg`);
 const btnCadastrarPost = document.getElementById('cadastrarPost');
 btnCadastrarPost.addEventListener('click', () => {
     const conteudoPost = document.getElementById('create-post').value;
-    if(conteudoPost.length == 0) return alert('Conteúdo do post não pode estar em branco!');
+    if (conteudoPost.length == 0) return alert('Conteúdo do post não pode estar em branco!');
 
 
     let numeroImg = Math.floor(Math.random() * 10 + 1);
@@ -390,15 +403,16 @@ btnHome.addEventListener('click', () => {
 dadosUser.allPosts();
 
 //curtir
-function curtir(idpost){
+function curtir(idpost) {
     dadosUser.curtirPost = idpost;
+    dadosUser.allPosts();
     //alert(idpost);
 }
 
 //SAIR
 const btnLogoff = document.getElementById('logoff');
 btnLogoff.addEventListener('click', () => {
-    if(dadosUser.logoff){
+    if (dadosUser.logoff) {
         window.location.href = "index.html";
     };
 });
