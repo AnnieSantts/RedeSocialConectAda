@@ -110,15 +110,19 @@ class Usuario {
                 content += `
                 <div class="feed flexMiddleCenter">
                     <span class="user w100">${i.nome}</span>
-                    <button class="btn btn-primary btn-seguir" onclick="deixarSeguir('${i.user}')">Deixar de seguir</buton>
-                </div>`;
+                    <button class="btn btn-primary btn-seguir" onclick="deixarSeguir('${i.user}')">Deixar de seguir</buton>`;
             } else {
                 content += `
                 <div class="feed flexMiddleCenter">
                     <span class="user w100">${i.nome}</span>
                     <button class="btn btn-primary btn-seguir" onclick="seguir('${i.user}')">Seguir</buton>
-                </div>`;
+                `;
             }
+            if (this.#usuario == 'admin@gmail.com') {
+                content += `<button class="btn btn-primary btn-seguir" onclick="apagarUsuario('${i.user}')">Apagar Usuário</buton>`;
+            }
+
+            content += `</div>`;
         });
 
         document.getElementById("mostra-feeds").innerHTML = content;

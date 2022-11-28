@@ -56,8 +56,8 @@ function comentarPost(post) {
 }
 
 function excluirPostagem(idPost) {
-    dadosUser.removerPostagem(idPost);
-    dadosUser.meusPosts();
+    postagem.removerPostagem(idPost);
+    postagem.meusPosts();
 }
 
 //Carregar no Início
