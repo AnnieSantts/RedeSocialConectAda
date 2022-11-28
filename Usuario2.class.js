@@ -88,8 +88,16 @@ class Usuario {
         let postsPessoais = JSON.parse(localStorage.getItem('posts-' + this.#usuario)) ?? [];
         postsPessoais = postsPessoais.sort((a, b) => b.idpost - a.idpost);
 
+        let recuperaCurtidas = JSON.parse(localStorage.getItem('curtidas')) ?? []
+
         const infoPessoal = Usuario.infoUsuario(this.#usuario);
         postsPessoais.forEach(post => {
+            let totalCurtidas = 0;
+            recuperaCurtidas.forEach(id => {
+                if (id.curtida == post.idpost) {
+                    totalCurtidas++;
+                }
+            })
             let date = new Date().setTime(post.idpost)
             content += `
             <div class="feed">
@@ -123,6 +131,22 @@ class Usuario {
                 </div>
 
                 <span onclick="excluirPostagem(${post.idpost})"><i class="uil uil-trash size20"></i></span>
+
+                <div class="liked-by"> `
+
+            for (let ct = 0; ct < totalCurtidas; ct++) {
+                if (ct < 11) {
+                    content += `<span>
+                    <img src="./images/profile-${Math.floor(Math.random() * 20 + 1)}.jpg" alt="">
+                </span>`
+                }
+            }
+
+            content += `<p>
+                        Curtido <b>${totalCurtidas} vezes(s)</b>
+                    </p>
+                </div>
+               
                                
                 
             </div>`;
@@ -189,15 +213,14 @@ class Usuario {
                 <span onclick="curtir(${post.idpost})"><i class="uil uil-heart size20" id="coracao-${post.idpost}></i></span>
                 <span><i class="uil uil-comment-dots size20"></i></span>
                 
-                <div class="liked-by">
-                    <span>
-                        <img src="./images/profile-${Math.floor(Math.random() * 20 + 1)}.jpg" alt="">
-                    </span>`
+                <div class="liked-by"> `
 
-            if (totalCurtidas > 1) {
-                content += `<span>
-                        <img src="./images/profile-${Math.floor(Math.random() * 20 + 1)}.jpg" alt="">
-                    </span>`
+            for (let ct = 0; ct < totalCurtidas; ct++) {
+                if (ct < 11) {
+                    content += `<span>
+                    <img src="./images/profile-${Math.floor(Math.random() * 20 + 1)}.jpg" alt="">
+                </span>`
+                }
             }
 
             content += `<p>
@@ -322,13 +345,13 @@ class Usuario {
     set removerPostagem(idPost) {
         let postagens = JSON.parse(localStorage.getItem('posts-' + this.#usuario)) ?? [];
         let postagensRestante = [];
-        postagens.forEach(p=>{
-            if(p.idpost != idPost){
-                postagensRestante.push({'txtpost':p.txtpost,'imagem':p.imagem,'idpost':p.idpost,'autor':p.autor});
+        postagens.forEach(p => {
+            if (p.idpost != idPost) {
+                postagensRestante.push({ 'txtpost': p.txtpost, 'imagem': p.imagem, 'idpost': p.idpost, 'autor': p.autor });
             }
         })
-        localStorage.setItem('posts-' + this.#usuario, JSON.stringify(postagensRestante));      
-        
+        localStorage.setItem('posts-' + this.#usuario, JSON.stringify(postagensRestante));
+
     }
 
     MONTH_NAMES = [
