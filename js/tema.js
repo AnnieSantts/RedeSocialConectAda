@@ -1,102 +1,15 @@
-// @TODO: Remover código sem utilização de Notificações, mensagens e marcações
-const usuarios = localStorage.getItem('usuarios') ?? [];
-if(usuarios.length == 0) {
-    localStorage.setItem('usuarios', JSON.stringify(
-        [
-            {
-              "nome": "admin",
-              "user": "admin@gmail.com",
-              "senha": "admin",
-              "logo" : "profile-9",
-              "tipo": "admin"
-            },
-            {
-              "nome": "Helade",
-              "user": "helade@gmail.com",
-              "senha": "helade",
-              "logo" : "profile-20",
-              "tipo": "user"
-            },
-            {
-              "nome": "Andre",
-              "user": "andre@gmail.com",
-              "senha": "andre",
-              "logo" : "profile-11",
-              "tipo": "user"
-            },
-            {
-              "nome": "Annie",
-              "user": "annie@gmail.com",
-              "senha": "annie",
-              "logo" : "profile-6",
-              "tipo": "user"
-            },
-            {
-              "nome": "Nathalia",
-              "user": "nathalia@gmail.com",
-              "senha": "nathalia",
-              "logo" : "profile-5",
-              "tipo": "user"
-            },
-            {
-              "nome": "Joao",
-              "user": "joao@gmail.com",
-              "senha": "joao",
-              "logo" : "profile-8",
-              "tipo": "user"
-            }
-          ]
-    ));
-}
+//CUSTOMIZAÇÃO DO TEMA
+const theme = document.getElementById('theme');
 
-//SIDEBAR
-const menuItens = document.querySelectorAll('.menu-item');
-
-//Amigos
-const friendsSearch = document.querySelector('#friends-search');
-
-//TEMA
-const theme = document.querySelector('#theme');
 const themeModal = document.querySelector('.customize-theme');
 const fontSizes = document.querySelectorAll('.choose-size span');
-var root = document.querySelector(':root');
+const root = document.querySelector(':root');
 const colorPalette = document.querySelectorAll('.choose-color span');
+
 const Bg1 = document.querySelector('.bg-1');
 const Bg2 = document.querySelector('.bg-2');
 const Bg3 = document.querySelector('.bg-3');
 
-//FUNCIONALIDADES
-const btnSearch = document.querySelector('.uil-search');
-
-//Efetuar consulta
-btnSearch.addEventListener('click',()=>{
-    const word = document.getElementById('input-search').value;
-    /*Acesso alguma classe para buscar possíveis amigo*/
-});
-
-//SIDEBAR
-//Remove class active menu itens
-const changeActiveItem = () => {
-    menuItens.forEach(item => {
-        item.classList.remove('active');
-    })
-}
-
-menuItens.forEach(item => {
-    item.addEventListener('click', () => {
-        changeActiveItem();
-        item.classList.add('active');
-    })
-})
-
-//Busca chat
-const { user } = JSON.parse(localStorage.getItem('logado'));
-friendsSearch.addEventListener('input', () => {
-    const { value } = friendsSearch;
-    new Usuario(user).filtrarAmigos(value);
-});
-
-//CUSTOMIZAÇÃO DO TEMA
 //Abrir modal
 const openThemeModal = () => {
     themeModal.style.display = 'grid';
@@ -227,4 +140,3 @@ Bg3.addEventListener('click', () => {
     Bg2.classList.remove('active');
     changeBG();
 })
-
