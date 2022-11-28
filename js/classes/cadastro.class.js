@@ -1,4 +1,4 @@
-class Cadatsro {
+class Cadastro {
     #nome;
     #email;
     #senha;
@@ -13,7 +13,6 @@ class Cadatsro {
 
     adicionarUsuario() {
         if (this.#senha.length <= 3) return alert('Sua senha precisa de pelo menos 4 caracteres');
-
         if (this.#senha != this.#repetesenha) return alert('Senha digitadas não conferem');
 
         const usuariosCadastrados = JSON.parse(localStorage.getItem("usuarios")) ?? [];

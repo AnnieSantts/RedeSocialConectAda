@@ -12,7 +12,8 @@ btnCadastrarNewUSer.onclick = () => {
     const senha = document.getElementById('senhaLogin').value;
     const repetesenha = document.getElementById('confirmarSenha').value;
 
-    new Cadastro(nome, email, senha, repetesenha).adicionarUsuario();
+    const cadastro = new Cadastro(nome, email, senha, repetesenha);
+    cadastro.adicionarUsuario();
 }
 
 // LOGIN USUÁRIO
