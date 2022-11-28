@@ -1,13 +1,59 @@
 // @TODO: Remover código sem utilização de Notificações, mensagens e marcações
+const usuarios = localStorage.getItem('usuarios') ?? [];
+if(usuarios.length == 0) {
+    localStorage.setItem('usuarios', JSON.stringify(
+        [
+            {
+              "nome": "admin",
+              "user": "admin@gmail.com",
+              "senha": "admin",
+              "logo" : "profile-9",
+              "tipo": "admin"
+            },
+            {
+              "nome": "Helade",
+              "user": "helade@gmail.com",
+              "senha": "helade",
+              "logo" : "profile-20",
+              "tipo": "user"
+            },
+            {
+              "nome": "Andre",
+              "user": "andre@gmail.com",
+              "senha": "andre",
+              "logo" : "profile-11",
+              "tipo": "user"
+            },
+            {
+              "nome": "Annie",
+              "user": "annie@gmail.com",
+              "senha": "annie",
+              "logo" : "profile-6",
+              "tipo": "user"
+            },
+            {
+              "nome": "Nathalia",
+              "user": "nathalia@gmail.com",
+              "senha": "nathalia",
+              "logo" : "profile-5",
+              "tipo": "user"
+            },
+            {
+              "nome": "Joao",
+              "user": "joao@gmail.com",
+              "senha": "joao",
+              "logo" : "profile-8",
+              "tipo": "user"
+            }
+          ]
+    ));
+}
 
 //SIDEBAR
 const menuItens = document.querySelectorAll('.menu-item');
 
-//MENSAGENS
-const messagesNotification = document.querySelector('#messages-notifications');
-const messages = document.querySelector('.messages');
-const message = messages.querySelectorAll('.message');
-const messageSearch = document.querySelector('#message-search');
+//Amigos
+const friendsSearch = document.querySelector('#friends-search');
 
 //TEMA
 const theme = document.querySelector('#theme');
@@ -38,42 +84,17 @@ const changeActiveItem = () => {
 
 menuItens.forEach(item => {
     item.addEventListener('click', () => {
-        changeActiveItem();//Desmarco o ativo
+        changeActiveItem();
         item.classList.add('active');
-        if (item.id != 'notifications') {
-            document.querySelector('.notifications-popup').style.display = 'none';
-        } else {
-            document.querySelector('.notifications-popup').style.display = 'block';
-            document.querySelector('#notifications .notification-count').style.display = 'none';//Oculta a contagem de notificações
-        }
     })
 })
-
-//MENSAGENS
-
-const searchMessage = () => {
-    const val = messageSearch.value.toLowerCase();  
-    message.forEach(user => {        
-        let name = user.querySelector('h5').textContent.toLowerCase();        
-        //if (name.indexOf(val) != -1) {
-            if (name.includes(val)) {
-            user.style.display = 'flex';
-        } else {
-            user.style.display = 'none';
-        }
-    })
-}
 
 //Busca chat
-messageSearch.addEventListener('keyup', searchMessage);
-
-messagesNotification.addEventListener('click', () => {
-    messages.style.boxShadow = '0 0 1rem var(--color-primary)';
-    messagesNotification.querySelector('notification-count').style.display = 'none';
-    setTimeout(() => {
-        messages.style.boxShadow = 'none';
-    }, 2000);
-})
+const { user } = JSON.parse(localStorage.getItem('logado'));
+friendsSearch.addEventListener('input', () => {
+    const { value } = friendsSearch;
+    new Usuario(user).filtrarAmigos(value);
+});
 
 //CUSTOMIZAÇÃO DO TEMA
 //Abrir modal
@@ -165,18 +186,20 @@ colorPalette.forEach(color => {
 let lightColorLightness;
 let whiteColorLightness;
 let darkColorLightness;
+let textColor;
 
 const changeBG = () => {
     root.style.setProperty('--light-color-lightness', lightColorLightness);
     root.style.setProperty('--white-color-lightness', whiteColorLightness);
     root.style.setProperty('--dark-color-lightness', darkColorLightness);
-
+    root.style.setProperty('--text-color', textColor);
 }
 
 Bg1.addEventListener('click', () => {
     darkColorLightness = '17%';
     whiteColorLightness = '100%';
     lightColorLightness = '95%';
+    textColor = '#333';
     Bg1.classList.add('active');
     Bg2.classList.remove('active');
     Bg3.classList.remove('active');
@@ -187,6 +210,7 @@ Bg2.addEventListener('click', () => {
     darkColorLightness = '95%';
     whiteColorLightness = '20%';
     lightColorLightness = '15%';
+    textColor = '#dadada';
     Bg2.classList.add('active');
     Bg1.classList.remove('active');
     Bg3.classList.remove('active');
@@ -197,6 +221,7 @@ Bg3.addEventListener('click', () => {
     darkColorLightness = '95%';
     whiteColorLightness = '10%';
     lightColorLightness = '0%';
+    textColor = '#dadada';
     Bg3.classList.add('active');
     Bg1.classList.remove('active');
     Bg2.classList.remove('active');
