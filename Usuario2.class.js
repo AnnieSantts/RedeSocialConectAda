@@ -49,7 +49,6 @@ class Usuario {
     set removerAmigo(nomeamigo) {
         let amigos = JSON.parse(localStorage.getItem('amigos-' + this.#usuario)) ?? [];
         amigos = amigos.filter(amigo => amigo.useramigo != nomeamigo);
-
         localStorage.setItem('amigos-' + this.#usuario, JSON.stringify(amigos));
         this.conexoes();
         this.filtrarAmigos();
@@ -81,9 +80,7 @@ class Usuario {
         //let comentarios = JSON.parse(localStorage.getItem('comentario-'+post)) ?? [];
     }
 
-    apagarUsuario(user) {
 
-    }
 
     meusPosts() {
         let content = '';
@@ -315,6 +312,24 @@ class Usuario {
         document.getElementById("mostra-feeds").innerHTML = content;
     }
 
+    set removerUser(user) {
+        //console.log('apagaruser' + user);
+        let usuarios = JSON.parse(localStorage.getItem('usuarios')) ?? [];
+        let userRestante = [];
+        usuarios.forEach(i => {
+            if (i.user != user) {
+                userRestante.push({ 'nome':i.nome, 'user':i.user, 'senha':i.senha, 'tipo':i.tipo});
+                //console.log('excluir '+user);
+            }
+            
+        })
+        localStorage.setItem('usuarios', JSON.stringify(userRestante));
+        //console.log(userRestante);
+        
+
+        //console.log(usuarios);
+    }
+
     MONTH_NAMES = [
         'January', 'February', 'March', 'April', 'May', 'June',
         'July', 'August', 'September', 'October', 'November', 'December'
@@ -457,7 +472,9 @@ btnLogoff.addEventListener('click', () => {
 
 //Apagar Usuário
 function apagarUsuario(user) {
+    //alert(user);
     dadosUser.removerUser = user;
+    dadosUser.conexoes();
 }
 
 function comentarPost(post) {
