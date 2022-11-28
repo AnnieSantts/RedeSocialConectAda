@@ -130,13 +130,8 @@ class Usuario {
 
     removerUser(user) {
         let usuarios = JSON.parse(localStorage.getItem('usuarios')) ?? [];
-        let userRestante = [];
-        usuarios.forEach(i => {
-            if (i.user != user) {
-                userRestante.push({ 'nome': i.nome, 'user': i.user, 'senha': i.senha, 'tipo': i.tipo });
-            }
+        let userRestante = usuarios.filter(us => us.user != user);
 
-        })
         localStorage.setItem('usuarios', JSON.stringify(userRestante));
     }
 }
