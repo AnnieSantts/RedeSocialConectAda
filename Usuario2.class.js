@@ -73,7 +73,7 @@ class Usuario {
         console.log('Comentar '.post);
         const comment = document.getElementById('txt-comentario-' + post).value;
         let comentarios = JSON.parse(localStorage.getItem('comentario-' + post)) ?? [];
-        comentarios.push({ 'comentario': comment, autor: this.#usuario });
+        comentarios.push({ 'comentario': comment, autor: this.#usuario, id:  `${Math.floor(Math.random() * 100000 + 1)}`});
         localStorage.setItem('comentario-' + post, JSON.stringify(comentarios));
         this.allPosts();
         //comentarPost(post)
@@ -225,7 +225,15 @@ class Usuario {
             let comentarios = JSON.parse(localStorage.getItem('comentario-' + post.idpost)) ?? [];
             comentarios.forEach(coment => {
                 let txtComentario = coment.comentario;
-                content += `<div class="comment text-muted w100">${txtComentario}</div>`;
+                content += `<div class="comment text-muted w100">
+                    ${txtComentario}
+                    <button>
+                        <i class="uil uil-pen" style="cursor: pointer"></i>
+                    </button>
+                    <button onclick="btnDeletarComentario(${post.idpost},${coment.id})">
+                        <i class="uil uil-trash" style="pointer: cursor"></i>
+                    </button>
+                </div>`;
             });
 
             content += `</div>`;
@@ -234,6 +242,13 @@ class Usuario {
 
         document.getElementById("mostra-feeds").innerHTML = content;
         this.filtrarAmigos();
+    }
+
+    deletarComentario(idPost, idComentario){
+        let comentarios = JSON.parse(localStorage.getItem(`comentario-${idPost}`))
+        let comentariosFiltrados = JSON.stringify(comentarios.filter( i => i.id != idComentario))
+        localStorage.setItem(`comentario-${idPost}`, comentariosFiltrados)
+        this.allPosts()
     }
 
     filtrarAmigos(nomeAmigo = '') {
@@ -482,3 +497,6 @@ function comentarPost(post) {
 }
 
 
+function btnDeletarComentario(idPost, idComentario){
+    dadosUser.deletarComentario(idPost, idComentario)
+}
