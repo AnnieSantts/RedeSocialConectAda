@@ -229,7 +229,7 @@ class Usuario {
                 </div>
                 
                 <div class="comment text-muted ">                                 
-                    <input type="text" placeholder="Digite aqui seu comentário" id="txt-comentario-${post.idpost}">
+                    <input type="text" placeholder="Digite aqui seu comentário" id="txt-comentario-${post.idpost}" style="width:300px;">
                     <input type="button" value="Comentar" class="btn btn-primary" onclick="comentarPost(${post.idpost})">                
             </div>           
 
@@ -243,7 +243,7 @@ class Usuario {
             let comentarios = JSON.parse(localStorage.getItem('comentario-' + post.idpost)) ?? [];
             comentarios.forEach(coment => {
                 let txtComentario = coment.comentario;
-                content += `<div class="comment text-muted w100">${txtComentario}</div>`;
+                content += `<div class="comment w100">${txtComentario}</div>`;
             });
 
             content += `</div>`;
