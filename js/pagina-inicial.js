@@ -35,6 +35,7 @@ btnCadastrarPost.addEventListener('click', () => {
 
 function curtir(idpost){
     postagem.curtirPost(idpost);
+    postagem.allPosts();
 }
 
 function seguir(userAmigo) {
@@ -43,6 +44,20 @@ function seguir(userAmigo) {
 
 function deixarSeguir(userAmigo) {
     usuario.removerAmigo(userAmigo);
+}
+
+function apagarUsuario(user) {
+    usuario.removerUser(user);
+    usuario.conexoes();
+}
+
+function comentarPost(post) {
+    postagem.comentarPost(post);
+}
+
+function excluirPostagem(idPost) {
+    dadosUser.removerPostagem(idPost);
+    dadosUser.meusPosts();
 }
 
 //Carregar no Início

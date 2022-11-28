@@ -123,4 +123,16 @@ class Usuario {
 
         document.getElementById("mostra-feeds").innerHTML = content;
     }
+
+    removerUser(user) {
+        let usuarios = JSON.parse(localStorage.getItem('usuarios')) ?? [];
+        let userRestante = [];
+        usuarios.forEach(i => {
+            if (i.user != user) {
+                userRestante.push({ 'nome': i.nome, 'user': i.user, 'senha': i.senha, 'tipo': i.tipo });
+            }
+
+        })
+        localStorage.setItem('usuarios', JSON.stringify(userRestante));
+    }
 }

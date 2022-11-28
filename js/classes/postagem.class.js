@@ -22,6 +22,26 @@ class Postagem {
         this.allPosts();
     }
 
+    comentarPost(post) {
+        const comment = document.getElementById('txt-comentario-' + post).value;
+        let comentarios = JSON.parse(localStorage.getItem('comentario-' + post)) ?? [];
+
+        comentarios.push({ 'comentario': comment, autor: this.#usuario });
+        localStorage.setItem('comentario-' + post, JSON.stringify(comentarios));
+        this.allPosts();
+    }
+
+    removerPostagem(idPost) {
+        let postagens = JSON.parse(localStorage.getItem('posts-' + this.#usuario)) ?? [];
+        let postagensRestante = [];
+        postagens.forEach(p => {
+            if (p.idpost != idPost) {
+                postagensRestante.push({ 'txtpost': p.txtpost, 'imagem': p.imagem, 'idpost': p.idpost, 'autor': p.autor });
+            }
+        })
+        localStorage.setItem('posts-' + this.#usuario, JSON.stringify(postagensRestante));
+    }
+
     meusPosts() {
         let content = '';
 

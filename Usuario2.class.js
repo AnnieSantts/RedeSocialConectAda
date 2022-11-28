@@ -330,30 +330,6 @@ class Usuario {
         document.getElementById("mostra-feeds").innerHTML = content;
     }
 
-    set removerUser(user) {
-        let usuarios = JSON.parse(localStorage.getItem('usuarios')) ?? [];
-        let userRestante = [];
-        usuarios.forEach(i => {
-            if (i.user != user) {
-                userRestante.push({ 'nome': i.nome, 'user': i.user, 'senha': i.senha, 'tipo': i.tipo });
-            }
-
-        })
-        localStorage.setItem('usuarios', JSON.stringify(userRestante));
-    }
-
-    set removerPostagem(idPost) {
-        let postagens = JSON.parse(localStorage.getItem('posts-' + this.#usuario)) ?? [];
-        let postagensRestante = [];
-        postagens.forEach(p => {
-            if (p.idpost != idPost) {
-                postagensRestante.push({ 'txtpost': p.txtpost, 'imagem': p.imagem, 'idpost': p.idpost, 'autor': p.autor });
-            }
-        })
-        localStorage.setItem('posts-' + this.#usuario, JSON.stringify(postagensRestante));
-
-    }
-
     MONTH_NAMES = [
         'January', 'February', 'March', 'April', 'May', 'June',
         'July', 'August', 'September', 'October', 'November', 'December'
