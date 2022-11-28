@@ -186,11 +186,16 @@ class Usuario {
                 <div class="liked-by">
                     <span>
                         <img src="./images/profile-${Math.floor(Math.random() * 20 + 1)}.jpg" alt="">
-                    </span>
-                    <span>
+                    </span>`
+
+            if (totalCurtidas > 1) {
+                content += `<span>
                         <img src="./images/profile-${Math.floor(Math.random() * 20 + 1)}.jpg" alt="">
-                    </span>
-                    <p>
+                    </span>`
+            }
+
+
+            content += `<p>
                         Curtido por <b>${totalCurtidas} pessoa(s)</b>
                     </p>
                 </div>
