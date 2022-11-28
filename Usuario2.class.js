@@ -61,6 +61,12 @@ class Usuario {
         localStorage.setItem('curtidas', JSON.stringify(curtidas));
     }
 
+    isPostCurtido(idPost){
+        const curtidoPor = this.#usuario;
+        let curtidas = JSON.parse(localStorage.getItem('curtidas'))?? [];
+        return curtidas.some(i => i.curtida == idPost);
+    }
+
     postar(conteudoPost) { 
         let idPost = new Date().getTime();
         let posts = JSON.parse(localStorage.getItem('posts-' + this.#usuario)) ?? [];
@@ -72,7 +78,7 @@ class Usuario {
     // comentar(conteudoComentario) { 
     //     let idComentario = new Date().getTime();
     //     let comentarios = JSON.parse(localStorage.getItem('comentarios-' + this.#usuario)) ?? [];
-    //     comentario.push({ 'txtpost': conteudoComentario, 'idcomentario': idComentario });
+    //     comentario.push({ 'txtcomentario': conteudoComentario, 'idcomentario': idComentario });
     //     localStorage.setItem('comentarios-' + this.#usuario, JSON.stringify(comentarios));
     //     this.meusComentarios();
     // }
@@ -99,7 +105,8 @@ class Usuario {
                             <small>São Paulo, ${this._timeAgo(date)}</small>
                         </div>
                         <span class="edit">
-                            <i class="uil uil-ellipsis-h"></i>
+                            <i class="uil uil-edit"></i>
+                            <i class="uil uil-trash"></i>
                         </span>
                     </div>
                 </div>
@@ -108,7 +115,7 @@ class Usuario {
                     <img src="${i.imagem}" alt="">
                 </div>
 
-                <span onclick="curtir(${i.idpost})"><i class="uil uil-heart"></i></span>
+                <span onclick="curtir(${i.idpost})"><i class="uil uil-heart" id="curtir"></i></span>
               
                 
                 <div class="liked-by">
@@ -130,6 +137,7 @@ class Usuario {
                         <b></b>${i.txtpost}                                            
                     </p>
                 </div> 
+
                 
                 <div class="comment text-muted"> 
                 <form action="" class="create-comentario">
@@ -202,6 +210,7 @@ class Usuario {
                             <b></b>${post.txtpost}                                            
                         </p>
                     </div>
+
 
                     <div class="comment text-muted"> 
                     <form action="" class="create-post">
@@ -377,6 +386,10 @@ linkMeusPost.addEventListener('click', () => {
     dadosUser.meusPosts();
 });
 
+//EDITAR POSTS
+// const btnEditar = document.getElementById('btn-editar');
+// btnEditar.addEventListener('click', () => {
+// });
 
 //CONEXÕES
 const btnConexoes = document.getElementById('btn-conexoes');
@@ -404,11 +417,20 @@ btnHome.addEventListener('click', () => {
 //Carregar no Início
 dadosUser.allPosts();
 
-//curtir
-function curtir(idpost){
-    dadosUser.curtirPost = idpost;
-    //alert(idpost);
-}
+//CURTIR_POST
+
+const btnCurtir = document.getElementById('curtir');
+btnCurtir.addEventListener('click', () => {
+    console.log('curtir');
+});
+
+// function curtir(idpost){
+//     dadosUser.curtirPost = idpost;
+//     if (btnCurtir.addEventListener('click', () => {{
+//         content =+`<i class="uil uil-heart style="color:red"></i>`
+//     }})) 
+//     //alert(idpost);
+// };
 
 //SAIR
 const btnLogoff = document.getElementById('logoff');
